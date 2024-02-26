@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,17 +16,6 @@ import java.util.Optional;
 public class RestApiController {
     @Autowired
     ProductRepo productRepository;
-//    public RestApiController(ProductRepo productRepository){
-//        this.productRepository = productRepository;
-//        this.productRepository.saveAll(List.of(
-//              new Product("Café Cereza"),
-//              new Product("Café Ganador"),
-//              new Product("Café Lareño"),
-//              new Product("Café Três Pontas")
-//        ));
-//    }
-
-
 
     @GetMapping
     Iterable<Product> getProducts(){
@@ -35,6 +25,11 @@ public class RestApiController {
     @GetMapping("/{id}")
     Optional<Product> getProduct(@PathVariable Long id){
         return productRepository.findById(id);
+    }
+
+    @GetMapping("product/{name}")
+    List<Product> getOneProduct(@PathVariable String name){
+        return productRepository.findByName(name);
     }
 
     @PostMapping

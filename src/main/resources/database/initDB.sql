@@ -5,3 +5,11 @@ CREATE TABLE IF NOT EXISTS products
     description VARCHAR(654) NOT NULL ,
     price INTEGER  NOT NULL
 );
+
+CREATE TABLE users
+(
+    id BIGSERIAL PRIMARY KEY ,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    balance INTEGER
+);
