@@ -21,7 +21,7 @@ public class UsersRestApi {
     @GetMapping
     Iterable<User> getAllUsers(){ return userRepo.findAll(); }
 
-    @PostMapping(path = "/register",  consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/signup",  consumes = MediaType.APPLICATION_JSON_VALUE)
     User createUser(@RequestBody User userM){
         User user = userRepo.findByName(userM.getName());
         if(user != null){
@@ -31,12 +31,14 @@ public class UsersRestApi {
         return userRepo.save(userM);
     }
 
-    @PostMapping(path = "/login")
-    ResponseEntity loginUser(@RequestBody User userM){
+    @PostMapping(path = "/login",  consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    ResponseEntity<User> loginUser(@RequestBody User userM){
         User user = userRepo.findByNameAndPassword(userM.getName(), userM.getPassword());
+        System.out.println(user.getName());
+        System.out.println(user.getPassword());
         if(user == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<User>(HttpStatus.OK);
     }
 }
