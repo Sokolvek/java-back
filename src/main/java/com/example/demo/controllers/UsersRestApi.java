@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controllers;
 
 import com.example.demo.models.User;
 import com.example.demo.repos.UserRepo;
@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -32,13 +34,16 @@ public class UsersRestApi {
     }
 
     @PostMapping(path = "/login",  consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    ResponseEntity<User> loginUser(@RequestBody User userM){
-        User user = userRepo.findByNameAndPassword(userM.getName(), userM.getPassword());
+    ResponseEntity<Map<String, Object>> loginUser(@RequestBody User userM){
+        User user = userRepo.findByNameAndPassword(userM.getName(), "1234");
         System.out.println(user.getName());
         System.out.println(user.getPassword());
         if(user == null){
-            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<User>(HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("loginStatus", "ok");
+
+        return ResponseEntity.ok(response);
     }
 }
